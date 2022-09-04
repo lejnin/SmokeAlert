@@ -1,13 +1,14 @@
 local wtChat
 local valuedText = common.CreateValuedText()
 local SmokeAlertText = mainForm:GetChildUnchecked("SmokeAlertText", false)
+local LightWing = mainForm:GetChildUnchecked("LightWing", false)
 local smokesIds = {}
 
 function LogToChat(text)
     if not wtChat then
         wtChat = stateMainForm:GetChildUnchecked("ChatLog", false)
         wtChat = wtChat:GetChildUnchecked("Container", true)
-        local formatVT = "<html fontname='AllodsFantasy' fontsize='14' shadow='1'><rs class='color'><r name='addonName'/><r name='text'/></rs></html>"
+        local formatVT = "<html fontname='AllodsFantasy' fontsize='14' shadow='1'><rs class='color'><r name='text'/></rs></html>"
         valuedText:SetFormat(userMods.ToWString(formatVT))
     end
 
@@ -19,34 +20,35 @@ function LogToChat(text)
         valuedText:ClearValues()
         valuedText:SetClassVal("color", "LogColorYellow")
         valuedText:SetVal("text", text)
-        valuedText:SetVal("addonName", userMods.ToWString("SA: "))
         wtChat:PushFrontValuedText(valuedText)
     end
 end
 
 function AlarmOn()
     SmokeAlertText:Show(true)
+    LightWing:Show(true)
     --common.UnRegisterEventHandler(OnEventBuffAdded, "EVENT_OBJECT_BUFF_ADDED", { objectId = avatar.GetId() })
 end
 
 function AlarmOff()
     SmokeAlertText:Show(false)
+    LightWing:Show(false)
     --common.RegisterEventHandler(OnEventBuffAdded, "EVENT_OBJECT_BUFF_ADDED", { objectId = avatar.GetId() })
     --common.UnRegisterEventHandler(OnEventBuffRemoved, "EVENT_OBJECT_BUFF_REMOVED", { objectId = avatar.GetId() })
 end
 
 function OnEventBuffAdded(params)
-    if not (userMods.FromWString(params.buffName) == 'Густой дым') then
+    if not (userMods.FromWString(params.buffName) == 'Кровопускание') then
         return false
     end
 
     local buffInfo = object.GetBuffInfo(params.buffId)
     if buffInfo.producer.casterId == nil then
-        return false
+        --return false
     end
 
     if not object.IsEnemy(buffInfo.producer.casterId) then
-        return
+        --return
     end
 
     --smokesIds[params.buffId] = true
@@ -56,7 +58,7 @@ function OnEventBuffAdded(params)
 end
 
 function OnEventBuffRemoved(params)
-    if not (userMods.FromWString(params.buffName) == 'Густой дым') then
+    if not (userMods.FromWString(params.buffName) == 'Кровопускание') then
         return false
     end
 
@@ -70,6 +72,8 @@ end
 
 function OnEventAvatarCreated()
     SmokeAlertText:Show(false)
+    LightWing:Show(false)
+    LogToChat('sdfsdf')
     common.RegisterEventHandler(OnEventBuffAdded, "EVENT_OBJECT_BUFF_ADDED", { objectId = avatar.GetId() })
     common.RegisterEventHandler(OnEventBuffRemoved, "EVENT_OBJECT_BUFF_REMOVED", { objectId = avatar.GetId() })
 end
