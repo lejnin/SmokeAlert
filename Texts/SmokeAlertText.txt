@@ -1,0 +1,1 @@
+<header alignx="center" aligny="middle" fontsize="50" outline="1"><span color="0xffff0000">АЛО ВРАЖЕСКАЯ ТУЧА!</span></header>
