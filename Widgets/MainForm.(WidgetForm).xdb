@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <WidgetForm>
 	<Name>MainForm</Name>
-	<Priority>6000</Priority>
+	<Priority>10000</Priority>
 	<Children>
 		<Item href="SmokeAlertText.(WidgetTextView).xdb#xpointer(WidgetTextView)" />
 	</Children>

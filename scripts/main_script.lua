@@ -19,32 +19,34 @@ function LogToChat(text)
         valuedText:ClearValues()
         valuedText:SetClassVal("color", "LogColorYellow")
         valuedText:SetVal("text", text)
-        valuedText:SetVal("addonName", "SA: ")
+        valuedText:SetVal("addonName", userMods.ToWString("SA: "))
         wtChat:PushFrontValuedText(valuedText)
     end
 end
 
 function AlarmOn()
-    LogToChat('on')
     SmokeAlertText:Show(true)
     --common.UnRegisterEventHandler(OnEventBuffAdded, "EVENT_OBJECT_BUFF_ADDED", { objectId = avatar.GetId() })
 end
 
 function AlarmOff()
-    LogToChat('off')
     SmokeAlertText:Show(false)
     --common.RegisterEventHandler(OnEventBuffAdded, "EVENT_OBJECT_BUFF_ADDED", { objectId = avatar.GetId() })
     --common.UnRegisterEventHandler(OnEventBuffRemoved, "EVENT_OBJECT_BUFF_REMOVED", { objectId = avatar.GetId() })
 end
 
 function OnEventBuffAdded(params)
-    if not (userMods.FromWString(params.buffName) == 'Кровопускание') then
+    if not (userMods.FromWString(params.buffName) == 'Густой дым') then
         return false
     end
 
     local buffInfo = object.GetBuffInfo(params.buffId)
     if buffInfo.producer.casterId == nil then
         return false
+    end
+
+    if not object.IsEnemy(buffInfo.producer.casterId) then
+        return
     end
 
     --smokesIds[params.buffId] = true
@@ -54,13 +56,9 @@ function OnEventBuffAdded(params)
 end
 
 function OnEventBuffRemoved(params)
-    if not (userMods.FromWString(params.buffName) == 'Кровопускание') then
+    if not (userMods.FromWString(params.buffName) == 'Густой дым') then
         return false
     end
-
-    --if smokesIds[params.buffId] == nil then
-    --    return
-    --end
 
     --smokesIds[params.buffId] = nil
     --if table.getn(smokesIds) == 0 then
@@ -71,6 +69,7 @@ function OnEventBuffRemoved(params)
 end
 
 function OnEventAvatarCreated()
+    SmokeAlertText:Show(false)
     common.RegisterEventHandler(OnEventBuffAdded, "EVENT_OBJECT_BUFF_ADDED", { objectId = avatar.GetId() })
     common.RegisterEventHandler(OnEventBuffRemoved, "EVENT_OBJECT_BUFF_REMOVED", { objectId = avatar.GetId() })
 end
