@@ -1,5 +1,4 @@
---local triggerBuff = 'Густой дым';
-local triggerBuff = 'Кровопускание';
+local triggerBuff = 'Густой дым';
 local wtChat
 local valuedText = common.CreateValuedText()
 local SmokeAlertText = mainForm:GetChildUnchecked("SmokeAlertText", false)
@@ -52,11 +51,8 @@ function OnEventBuffAdded(params)
     end
 
     if not object.IsEnemy(buffInfo.producer.casterId) then
-        --return
+        return
     end
-
-    --smokesIds[params.buffId] = true
-    --common.RegisterEventHandler(OnEventBuffRemoved, "EVENT_OBJECT_BUFF_REMOVED", { objectId = avatar.GetId() })
 
     AlarmOn()
 end
@@ -65,11 +61,6 @@ function OnEventBuffRemoved(params)
     if not (userMods.FromWString(params.buffName) == triggerBuff) then
         return false
     end
-
-    --smokesIds[params.buffId] = nil
-    --if table.getn(smokesIds) == 0 then
-    --    common.UnRegisterEventHandler(OnEventBuffRemoved, "EVENT_OBJECT_BUFF_REMOVED", { objectId = avatar.GetId() })
-    --end
 
     AlarmOff()
 end
