@@ -42,12 +42,12 @@ end
 
 function OnEventBuffAdded(params)
     if not (userMods.FromWString(params.buffName) == triggerBuff) then
-        return false
+        return
     end
 
     local buffInfo = object.GetBuffInfo(params.buffId)
     if buffInfo.producer.casterId == nil then
-        return false
+        return
     end
 
     if not object.IsEnemy(buffInfo.producer.casterId) then
@@ -59,7 +59,7 @@ end
 
 function OnEventBuffRemoved(params)
     if not (userMods.FromWString(params.buffName) == triggerBuff) then
-        return false
+        return
     end
 
     AlarmOff()
@@ -77,6 +77,11 @@ function OnEventAvatarCreated()
     SmokeAlertText:Show(false)
     SmokeEffectTexture:Show(false)
 
+    if not IsAvatarCanUseAddon() then
+        LogToChat('Кажется, ты не состоишь в ги Рыцари Крови')
+        return
+    end
+
     common.RegisterEventHandler(OnEventBuffAdded, "EVENT_OBJECT_BUFF_ADDED", { objectId = avatar.GetId() })
     common.RegisterEventHandler(OnEventBuffRemoved, "EVENT_OBJECT_BUFF_REMOVED", { objectId = avatar.GetId() })
 
@@ -84,6 +89,19 @@ function OnEventAvatarCreated()
         common.RegisterEventHandler(OnEventUpdateRatio, "EVENT_UPDATE_SHRINK_RATIO")
         OnEventUpdateRatio()
     end
+end
+
+function ToHex(str)
+    return (str:gsub('.', function (c)
+        return string.format('%02X', string.byte(c))
+    end))
+end
+
+function IsAvatarCanUseAddon()
+    local guildInfo = unit.GetGuildInfo(avatar.GetId())
+    local guildName = userMods.FromWString(guildInfo.name);
+
+    return not (guildName == nil or guildName == '' or tostring(ToHex(guildName)) ~= 'D0FBF6E0F0E820CAF0EEE2E8')
 end
 
 function Init()
