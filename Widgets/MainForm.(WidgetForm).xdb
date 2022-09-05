@@ -4,6 +4,7 @@
 	<Priority>10000</Priority>
 	<Children>
 		<Item href="SmokeAlertText.(WidgetTextView).xdb#xpointer(WidgetTextView)" />
+		<Item href="Smoke.(WidgetPanel).xdb#xpointer(/WidgetPanel)" />
 	</Children>
 	<BackLayer href="" />
 	<FrontLayer href="" />

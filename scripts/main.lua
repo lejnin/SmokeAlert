@@ -1,7 +1,9 @@
+--local triggerBuff = 'Густой дым';
+local triggerBuff = 'Кровопускание';
 local wtChat
 local valuedText = common.CreateValuedText()
 local SmokeAlertText = mainForm:GetChildUnchecked("SmokeAlertText", false)
-local smokesIds = {}
+local SmokeEffectTexture = mainForm:GetChildUnchecked("Smoke", false)
 
 function LogToChat(text)
     if not wtChat then
@@ -25,18 +27,22 @@ function LogToChat(text)
 end
 
 function AlarmOn()
-    SmokeAlertText:Show(true)
-    --common.UnRegisterEventHandler(OnEventBuffAdded, "EVENT_OBJECT_BUFF_ADDED", { objectId = avatar.GetId() })
+    if effect_type == 1 or effect_type == 3 then
+        SmokeEffectTexture:Show(true)
+    end
+
+    if effect_type == 2 or effect_type == 3 then
+        SmokeAlertText:Show(true)
+    end
 end
 
 function AlarmOff()
     SmokeAlertText:Show(false)
-    --common.RegisterEventHandler(OnEventBuffAdded, "EVENT_OBJECT_BUFF_ADDED", { objectId = avatar.GetId() })
-    --common.UnRegisterEventHandler(OnEventBuffRemoved, "EVENT_OBJECT_BUFF_REMOVED", { objectId = avatar.GetId() })
+    SmokeEffectTexture:Show(false)
 end
 
 function OnEventBuffAdded(params)
-    if not (userMods.FromWString(params.buffName) == 'Густой дым') then
+    if not (userMods.FromWString(params.buffName) == triggerBuff) then
         return false
     end
 
@@ -46,7 +52,7 @@ function OnEventBuffAdded(params)
     end
 
     if not object.IsEnemy(buffInfo.producer.casterId) then
-        return
+        --return
     end
 
     --smokesIds[params.buffId] = true
@@ -56,7 +62,7 @@ function OnEventBuffAdded(params)
 end
 
 function OnEventBuffRemoved(params)
-    if not (userMods.FromWString(params.buffName) == 'Густой дым') then
+    if not (userMods.FromWString(params.buffName) == triggerBuff) then
         return false
     end
 
@@ -68,10 +74,25 @@ function OnEventBuffRemoved(params)
     AlarmOff()
 end
 
+function OnEventUpdateRatio()
+    local posConverter = widgetsSystem:GetPosConverterParams()
+    local placement = SmokeEffectTexture:GetPlacementPlain()
+
+    placement.sizeX = posConverter.realSizeX / posConverter.realSizeY * 1024;
+    SmokeEffectTexture:SetPlacementPlain(placement)
+end
+
 function OnEventAvatarCreated()
     SmokeAlertText:Show(false)
+    SmokeEffectTexture:Show(false)
+
     common.RegisterEventHandler(OnEventBuffAdded, "EVENT_OBJECT_BUFF_ADDED", { objectId = avatar.GetId() })
     common.RegisterEventHandler(OnEventBuffRemoved, "EVENT_OBJECT_BUFF_REMOVED", { objectId = avatar.GetId() })
+
+    if effect_type == 1 or effect_type == 3 then
+        common.RegisterEventHandler(OnEventUpdateRatio, "EVENT_UPDATE_SHRINK_RATIO")
+        OnEventUpdateRatio()
+    end
 end
 
 function Init()
