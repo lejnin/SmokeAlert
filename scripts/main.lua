@@ -78,7 +78,7 @@ function OnEventAvatarCreated()
     SmokeEffectTexture:Show(false)
 
     if not IsAvatarCanUseAddon() then
-        LogToChat('Кажется, ты не состоишь в ги Рыцари Крови')
+        LogToChat('Аддон только для ги "Рыцари Крови"')
         return
     end
 
@@ -99,6 +99,10 @@ end
 
 function IsAvatarCanUseAddon()
     local guildInfo = unit.GetGuildInfo(avatar.GetId())
+    if guildInfo == nil then
+        return false
+    end
+
     local guildName = userMods.FromWString(guildInfo.name);
 
     return not (guildName == nil or guildName == '' or tostring(ToHex(guildName)) ~= 'D0FBF6E0F0E820CAF0EEE2E8')
