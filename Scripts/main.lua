@@ -63,14 +63,16 @@ function AlarmOff()
 end
 
 function LoadConfig()
-    effectConfig = userMods.GetGlobalConfigSection(addonName);
+    effectConfig = userMods.GetGlobalConfigSection(addonName) or effectConfig;
 
-    if effectConfig.effectType == nil or effects[effectConfig.effectType] == nil then
-        effectConfig.effectType = 3
-    end
+    if effectConfig ~= nil then
+        if effectConfig.effectType == nil or effects[effectConfig.effectType] == nil then
+            effectConfig.effectType = 3
+        end
 
-    if effectConfig.fade == nil then
-        effectConfig.fade = 1
+        if effectConfig.fade == nil then
+            effectConfig.fade = 1
+        end
     end
 
     LogToChat("Ёффект: " .. effects[effectConfig.effectType] .. "; ѕрозрачность: " .. tostring(effectConfig.fade))
