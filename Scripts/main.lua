@@ -119,7 +119,7 @@ function OnEventBuffAdded(params)
     AlarmOn()
 end
 
-function OnAoPanelClickButton()
+function OnAoPanelClickButton(params)
     if params.sender ~= nil and params.sender ~= addonName then
         return
     end
@@ -127,7 +127,7 @@ function OnAoPanelClickButton()
     OnClickButton()
 end
 
-function OnAoPanelRightClickButton()
+function OnAoPanelRightClickButton(params)
     if params.sender ~= nil and params.sender ~= addonName then
         return
     end
@@ -175,8 +175,8 @@ function OnAoPanelStart()
         name = addonName, sysName = addonName, param = params
     })
 
-    common.RegisterEventHandler(OnClickButton, 'AOPANEL_BUTTON_LEFT_CLICK')
-    common.RegisterEventHandler(OnRightClickButton, 'AOPANEL_BUTTON_RIGHT_CLICK')
+    common.RegisterEventHandler(OnAoPanelClickButton, 'AOPANEL_BUTTON_LEFT_CLICK')
+    common.RegisterEventHandler(OnAoPanelRightClickButton, 'AOPANEL_BUTTON_RIGHT_CLICK')
 
     ChangeModeButton:Show(false)
 end
