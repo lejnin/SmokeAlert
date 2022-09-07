@@ -3,8 +3,8 @@
     <Name>SmokeAlert</Name>
     <AutoStart>true</AutoStart>
     <ScriptFileRefs>
-        <Item href="scripts/config.lua"/>
-        <Item href="scripts/main.luac"/>
+        <Item href="Scripts/LibDnD.lua"/>
+        <Item href="Scripts/main.lua"/>
     </ScriptFileRefs>
     <MainFormId>mainForm</MainFormId>
     <Forms>

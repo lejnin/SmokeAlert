@@ -5,6 +5,7 @@
 	<Children>
 		<Item href="SmokeAlertText.(WidgetTextView).xdb#xpointer(WidgetTextView)" />
 		<Item href="Smoke.(WidgetPanel).xdb#xpointer(/WidgetPanel)" />
+		<Item href="Buttons/ChangeMode/Button.(WidgetButton).xdb#xpointer(/WidgetButton)" />
 	</Children>
 	<BackLayer href="" />
 	<FrontLayer href="" />
