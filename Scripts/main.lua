@@ -202,11 +202,6 @@ function OnEventAvatarCreated()
     SmokeEffectTexture:Show(false)
     ChangeModeButton:Show(false)
 
-    if not IsAvatarCanUseAddon() then
-        LogToChat('Аддон только для ги "Рыцари Крови" [МГ]')
-        return
-    end
-
     CreateConfigButton()
     LoadConfig()
 
@@ -223,22 +218,6 @@ function ToHex(str)
     return (str:gsub('.', function (c)
         return string.format('%02X', string.byte(c))
     end))
-end
-
-function IsAvatarCanUseAddon()
-    local serverName = userMods.FromWString(mission.GetShardName());
-    if ToHex(serverName) ~= 'CCEEEBEEE4E0FF20C3E2E0F0E4E8FF' then
-        return false
-    end
-
-    local guildInfo = unit.GetGuildInfo(avatar.GetId())
-    if guildInfo == nil then
-        return false
-    end
-
-    local guildName = userMods.FromWString(guildInfo.name);
-
-    return not (guildName == nil or guildName == '' or ToHex(guildName) ~= 'D0FBF6E0F0E820CAF0EEE2E8')
 end
 
 function Init()
