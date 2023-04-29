@@ -1,11 +1,10 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
 <WidgetLayerSimpleTexture>
 	<Color>0xffffffff</Color>
 	<Grayed>false</Grayed>
 	<BlendEffect>BLEND_EFFECT_ALPHABLND</BlendEffect>
 	<flatPlacement>false</flatPlacement>
 	<lazyLoad>false</lazyLoad>
-	<textureItem href="Smoke.(UITextureElement).xdb#xpointer(/UITextureElement)" />
-	<textureMask href="" />
+	<textureItem href="Smoke.(UITextureElement).xdb" />
 	<Scaling>true</Scaling>
 </WidgetLayerSimpleTexture>

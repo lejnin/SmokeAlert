@@ -1,23 +1,23 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
 <WidgetTextView>
-    <Name>SmokeAlertText</Name>
-    <Priority>10000</Priority>
-    <Placement>
-        <QuantumScale>false</QuantumScale>
-        <X>
-            <Align>WIDGET_ALIGN_BOTH</Align>
-        </X>
-        <Y>
-            <Align>WIDGET_ALIGN_BOTH</Align>
-            <HighPos>300</HighPos>
-        </Y>
-    </Placement>
-    <Visible>true</Visible>
-    <Enabled>true</Enabled>
-    <TransparentInput>true</TransparentInput>
-    <FormatFileRef href="Texts/SmokeAlertText.txt" />
-    <TextStyle>
-        <multiline>false</multiline>
-        <wrapText>false</wrapText>
-    </TextStyle>
+	<FormatFileRef href="Texts/SmokeAlertText.txt" />
+	<TextStyle>
+		<multiline>false</multiline>
+		<wrapText>false</wrapText>
+	</TextStyle>
+	<Name>SmokeAlertText</Name>
+	<Priority>10000</Priority>
+	<Placement>
+		<QuantumScale>false</QuantumScale>
+		<X>
+			<Align>WIDGET_ALIGN_BOTH</Align>
+		</X>
+		<Y>
+			<Align>WIDGET_ALIGN_BOTH</Align>
+			<HighPos>300</HighPos>
+		</Y>
+	</Placement>
+	<Visible>true</Visible>
+	<Enabled>true</Enabled>
+	<TransparentInput>true</TransparentInput>
 </WidgetTextView>

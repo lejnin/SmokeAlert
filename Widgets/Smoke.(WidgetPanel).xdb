@@ -1,18 +1,14 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
 <WidgetPanel>
 	<Name>Smoke</Name>
 	<Priority>2</Priority>
-	<BackLayer href="Smoke.(WidgetLayerSimpleTexture).xdb#xpointer(/WidgetLayerSimpleTexture)" />
+	<BackLayer href="Smoke.(WidgetLayerSimpleTexture).xdb" />
 	<Placement>
 		<X>
-			<Align>WIDGET_ALIGN_CENTER</Align>
-			<HighPos>0</HighPos>
-			<Size>1280</Size>
+			<Align>WIDGET_ALIGN_BOTH</Align>
 		</X>
 		<Y>
-			<Align>WIDGET_ALIGN_CENTER</Align>
-			<Pos>0</Pos>
-			<Size>1024</Size>
+			<Align>WIDGET_ALIGN_BOTH</Align>
 		</Y>
 	</Placement>
 	<TransparentInput>true</TransparentInput>

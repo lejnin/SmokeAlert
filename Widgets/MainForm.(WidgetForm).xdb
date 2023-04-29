@@ -1,14 +1,12 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
 <WidgetForm>
 	<Name>MainForm</Name>
 	<Priority>10000</Priority>
 	<Children>
-		<Item href="SmokeAlertText.(WidgetTextView).xdb#xpointer(WidgetTextView)" />
-		<Item href="Smoke.(WidgetPanel).xdb#xpointer(/WidgetPanel)" />
-		<Item href="Buttons/ChangeMode/Button.(WidgetButton).xdb#xpointer(/WidgetButton)" />
+		<Item href="SmokeAlertText.(WidgetTextView).xdb" />
+		<Item href="Smoke.(WidgetPanel).xdb" />
+		<Item href="Buttons/ChangeMode/Button.(WidgetButton).xdb" />
 	</Children>
-	<BackLayer href="" />
-	<FrontLayer href="" />
 	<Placement>
 		<QuantumScale>false</QuantumScale>
 		<X>

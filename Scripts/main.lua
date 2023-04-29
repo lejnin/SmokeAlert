@@ -1,19 +1,18 @@
 local triggerBuff = 'Густой дым'
+
 local wtChat
 local valuedText = common.CreateValuedText()
-local SmokeAlertText = mainForm:GetChildUnchecked("SmokeAlertText", false)
-local SmokeEffectTexture = mainForm:GetChildUnchecked("Smoke", false)
-local ChangeModeButton = mainForm:GetChildUnchecked("ChangeModeButton", false)
-local effectConfig = {
-    fade = 1.0; effectType = 3;
-}
+local SmokeAlertText, ChangeModeButton, SmokeEffectTexture
+
+local effectConfig = {}
+
 local addonName = common.GetAddonName()
 local testTimer = 2
 
 local effects = {}
-effects[1] = 'только затемнение экрана'
-effects[2] = 'только надпись на экране'
-effects[3] = 'надпись + затменение'
+effects[1] = 'затемнение'
+effects[2] = 'текст'
+effects[3] = 'текст + затменение'
 
 function LogToChat(text)
     if not wtChat then
@@ -36,7 +35,17 @@ function LogToChat(text)
     end
 end
 
-function CreateConfigButton()
+function PrepareTextures()
+    SmokeAlertText = mainForm:GetChildUnchecked("SmokeAlertText", false)
+    SmokeEffectTexture = mainForm:GetChildUnchecked("Smoke", false)
+    ChangeModeButton = mainForm:GetChildUnchecked("ChangeModeButton", false)
+
+    SmokeAlertText:Show(false)
+    SmokeEffectTexture:Show(false)
+    ChangeModeButton:Show(false)
+end
+
+function SetConfigButton()
     ChangeModeButton:Show(true)
 
     DnD.Init(ChangeModeButton, nil, true)
@@ -71,11 +80,11 @@ function LoadConfig()
         end
 
         if effectConfig.fade == nil then
-            effectConfig.fade = 1
+            effectConfig.fade = 0.5
         end
     end
 
-    LogToChat("Эффект: " .. effects[effectConfig.effectType] .. "; Прозрачность: " .. tostring(effectConfig.fade))
+    SmokeEffectTexture:SetFade(effectConfig.fade)
 end
 
 function SaveConfig()
@@ -198,20 +207,12 @@ function OnEventUpdateRatio()
 end
 
 function OnEventAvatarCreated()
-    SmokeAlertText:Show(false)
-    SmokeEffectTexture:Show(false)
-    ChangeModeButton:Show(false)
-
-    CreateConfigButton()
+    PrepareTextures()
+    SetConfigButton()
     LoadConfig()
 
     common.RegisterEventHandler(OnEventBuffAdded, "EVENT_OBJECT_BUFF_ADDED", { objectId = avatar.GetId() })
     common.RegisterEventHandler(OnEventBuffRemoved, "EVENT_OBJECT_BUFF_REMOVED", { objectId = avatar.GetId() })
-
-    OnEventUpdateRatio()
-    if effectConfig.effectType == 1 or effectConfig.effectType == 3 then
-        common.RegisterEventHandler(OnEventUpdateRatio, "EVENT_UPDATE_SHRINK_RATIO")
-    end
 end
 
 function Init()

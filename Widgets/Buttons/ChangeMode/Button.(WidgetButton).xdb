@@ -1,18 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
 <WidgetButton>
-	<Name>ChangeModeButton</Name>
-	<Priority>1</Priority>
-	<Header>
-		<Prototype href="/Mods/SampleCommon/Button/ButtonRegular.Prototype.(WidgetButton).xdb#xpointer(/WidgetButton)" />
-	</Header>
-	<Placement>
-		<X>
-			<Size>35</Size>
-		</X>
-		<Y>
-			<Size>30</Size>
-		</Y>
-	</Placement>
 	<Variants>
 		<Item>
 			<TextFileRef href="ButtonText.txt" />
@@ -21,5 +8,18 @@
 			<ReactionOnUp>true</ReactionOnUp>
 		</Item>
 	</Variants>
+	<Name>ChangeModeButton</Name>
+	<Priority>1</Priority>
+	<Placement>
+		<X>
+			<Size>35</Size>
+		</X>
+		<Y>
+			<Size>30</Size>
+		</Y>
+	</Placement>
 	<PickChildrenOnly>false</PickChildrenOnly>
+	<Header>
+		<Prototype href="/Mods/SampleCommon/Button/ButtonRegular.Prototype.(WidgetButton).xdb" />
+	</Header>
 </WidgetButton>
