@@ -14,7 +14,7 @@ effects[1] = 'затемнение'
 effects[2] = 'текст'
 effects[3] = 'текст + затменение'
 
-function LogToChat(text)
+local function LogToChat(text)
     if not wtChat then
         wtChat = stateMainForm:GetChildUnchecked("ChatLog", false)
         wtChat = wtChat:GetChildUnchecked("Container", true)
@@ -35,7 +35,11 @@ function LogToChat(text)
     end
 end
 
-function PrepareTextures()
+local function SaveConfig()
+    userMods.SetGlobalConfigSection(addonName, effectConfig)
+end
+
+local function PrepareTextures()
     SmokeAlertText = mainForm:GetChildUnchecked("SmokeAlertText", false)
     SmokeEffectTexture = mainForm:GetChildUnchecked("Smoke", false)
     ChangeModeButton = mainForm:GetChildUnchecked("ChangeModeButton", false)
@@ -45,18 +49,7 @@ function PrepareTextures()
     ChangeModeButton:Show(false)
 end
 
-function SetConfigButton()
-    ChangeModeButton:Show(true)
-
-    DnD.Init(ChangeModeButton, nil, true)
-
-    common.RegisterReactionHandler(OnClickButton, 'EVENT_ON_CONFIG_BUTTON_CLICK')
-    common.RegisterReactionHandler(OnRightClickButton, 'EVENT_ON_CONFIG_BUTTON_RIGHT_CLICK')
-
-    common.RegisterEventHandler(OnAoPanelStart, 'AOPANEL_START')
-end
-
-function AlarmOn()
+local function AlarmOn()
     if effectConfig.effectType == 1 or effectConfig.effectType == 3 then
         SmokeEffectTexture:Show(true)
     end
@@ -66,40 +59,12 @@ function AlarmOn()
     end
 end
 
-function AlarmOff()
+local function AlarmOff()
     SmokeAlertText:Show(false)
     SmokeEffectTexture:Show(false)
 end
 
-function LoadConfig()
-    effectConfig = userMods.GetGlobalConfigSection(addonName) or effectConfig;
-
-    if effectConfig ~= nil then
-        if effectConfig.effectType == nil or effects[effectConfig.effectType] == nil then
-            effectConfig.effectType = 3
-        end
-
-        if effectConfig.fade == nil then
-            effectConfig.fade = 0.5
-        end
-    end
-
-    SmokeEffectTexture:SetFade(effectConfig.fade)
-end
-
-function SaveConfig()
-    userMods.SetGlobalConfigSection(addonName, effectConfig)
-end
-
-function ShowEffectsForFewSeconds()
-    AlarmOff()
-    testTimer = 3
-    AlarmOn()
-
-    common.RegisterEventHandler(OnEventSecondTimer, 'EVENT_SECOND_TIMER')
-end
-
-function OnEventSecondTimer()
+local function OnEventSecondTimer()
     testTimer = testTimer - 1
 
     if testTimer > 0 then
@@ -111,40 +76,15 @@ function OnEventSecondTimer()
     common.UnRegisterEventHandler(OnEventSecondTimer, 'EVENT_SECOND_TIMER')
 end
 
-function OnEventBuffAdded(params)
-    if not (userMods.FromWString(params.buffName) == triggerBuff) then
-        return
-    end
-
-    local buffInfo = object.GetBuffInfo(params.buffId)
-    if buffInfo.producer.casterId == nil then
-        return
-    end
-
-    if not object.IsEnemy(buffInfo.producer.casterId) then
-        return
-    end
-
+local function ShowEffectsForFewSeconds()
+    AlarmOff()
+    testTimer = 3
     AlarmOn()
+
+    common.RegisterEventHandler(OnEventSecondTimer, 'EVENT_SECOND_TIMER')
 end
 
-function OnAoPanelClickButton(params)
-    if params.sender ~= nil and params.sender ~= addonName then
-        return
-    end
-
-    OnClickButton()
-end
-
-function OnAoPanelRightClickButton(params)
-    if params.sender ~= nil and params.sender ~= addonName then
-        return
-    end
-
-    OnRightClickButton()
-end
-
-function OnClickButton()
+local function OnClickButton()
     if DnD:IsDragging() then
         return
     end
@@ -160,7 +100,7 @@ function OnClickButton()
     ShowEffectsForFewSeconds()
 end
 
-function OnRightClickButton()
+local function OnRightClickButton()
     if DnD:IsDragging() then
         return
     end
@@ -177,7 +117,23 @@ function OnRightClickButton()
     ShowEffectsForFewSeconds()
 end
 
-function OnAoPanelStart()
+local function OnAoPanelClickButton(params)
+    if params.sender ~= nil and params.sender ~= addonName then
+        return
+    end
+
+    OnClickButton()
+end
+
+local function OnAoPanelRightClickButton(params)
+    if params.sender ~= nil and params.sender ~= addonName then
+        return
+    end
+
+    OnRightClickButton()
+end
+
+local function OnAoPanelStart()
     local SetVal = { val = userMods.ToWString("SA") }
     local params = { header = SetVal, ptype = "button", size = 35 }
     userMods.SendEvent("AOPANEL_SEND_ADDON", {
@@ -190,7 +146,51 @@ function OnAoPanelStart()
     ChangeModeButton:Show(false)
 end
 
-function OnEventBuffRemoved(params)
+local function SetConfigButton()
+    ChangeModeButton:Show(true)
+
+    DnD.Init(ChangeModeButton, nil, true)
+
+    common.RegisterReactionHandler(OnClickButton, 'EVENT_ON_CONFIG_BUTTON_CLICK')
+    common.RegisterReactionHandler(OnRightClickButton, 'EVENT_ON_CONFIG_BUTTON_RIGHT_CLICK')
+
+    common.RegisterEventHandler(OnAoPanelStart, 'AOPANEL_START')
+end
+
+local function LoadConfig()
+    effectConfig = userMods.GetGlobalConfigSection(addonName) or effectConfig;
+
+    if effectConfig ~= nil then
+        if effectConfig.effectType == nil or effects[effectConfig.effectType] == nil then
+            effectConfig.effectType = 3
+        end
+
+        if effectConfig.fade == nil then
+            effectConfig.fade = 0.5
+        end
+    end
+
+    SmokeEffectTexture:SetFade(effectConfig.fade)
+end
+
+local function OnEventBuffAdded(params)
+    if not (userMods.FromWString(params.buffName) == triggerBuff) then
+        return
+    end
+
+    local buffInfo = object.GetBuffInfo(params.buffId)
+    if buffInfo.producer.casterId == nil then
+        return
+    end
+
+    if not object.IsEnemy(buffInfo.producer.casterId) then
+        return
+    end
+
+    AlarmOn()
+end
+
+local function OnEventBuffRemoved(params)
     if not (userMods.FromWString(params.buffName) == triggerBuff) then
         return
     end
@@ -198,15 +198,7 @@ function OnEventBuffRemoved(params)
     AlarmOff()
 end
 
-function OnEventUpdateRatio()
-    local posConverter = widgetsSystem:GetPosConverterParams()
-    local placement = SmokeEffectTexture:GetPlacementPlain()
-
-    placement.sizeX = posConverter.realSizeX / posConverter.realSizeY * 1024;
-    SmokeEffectTexture:SetPlacementPlain(placement)
-end
-
-function OnEventAvatarCreated()
+local function OnEventAvatarCreated()
     PrepareTextures()
     SetConfigButton()
     LoadConfig()
@@ -215,7 +207,7 @@ function OnEventAvatarCreated()
     common.RegisterEventHandler(OnEventBuffRemoved, "EVENT_OBJECT_BUFF_REMOVED", { objectId = avatar.GetId() })
 end
 
-function Init()
+local function Init()
     if avatar and avatar.IsExist() then
         OnEventAvatarCreated()
     else
