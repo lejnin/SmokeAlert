@@ -12,7 +12,7 @@ local testTimer = 2
 local effects = {}
 effects[1] = 'затемнение'
 effects[2] = 'текст'
-effects[3] = 'текст + затменение'
+effects[3] = 'текст + затемнение'
 
 local function LogToChat(text)
     if not wtChat then
